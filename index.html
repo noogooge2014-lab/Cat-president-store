@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>상품 주문</title>
+
+  <script src="https://js.tosspayments.com/v2/standard"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #f4f6f8;
+      color: #191f28;
+      font-family:
+        Pretendard,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    button,
+    select,
+    input {
+      font: inherit;
+    }
+
+    .page {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      padding: 32px 18px 60px;
+    }
+
+    .header {
+      margin-bottom: 22px;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.25;
+    }
+
+    .header p {
+      margin: 0;
+      color: #6b7684;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .card {
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid #e5e8eb;
+      border-radius: 20px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+    }
+
+    .food-image {
+      display: grid;
+      place-items: center;
+      height: 220px;
+      background:
+        radial-gradient(circle at 25% 20%, #ffd58d, transparent 28%),
+        linear-gradient(135deg, #ff9f43, #ff7043);
+      font-size: 92px;
+      user-select: none;
+    }
+
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .product-media {
+      background: #111417;
+    }
+
+    .product-media img,
+    .product-media video {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #111417;
+    }
+
+    .summary-empty {
+      margin: 0;
+      padding: 18px 0;
+      color: #8b95a1;
+      text-align: center;
+    }
+
+    .content {
+      padding: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff3e8;
+      color: #e85d04;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .product-title {
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .description {
+      margin: 0 0 24px;
+      color: #6b7684;
+      line-height: 1.65;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 0;
+      border-top: 1px solid #edf0f2;
+    }
+
+    .row-label {
+      font-weight: 700;
+    }
+
+    .unit-price {
+      color: #4e5968;
+    }
+
+    select {
+      min-width: 105px;
+      padding: 11px 36px 11px 14px;
+      border: 1px solid #d1d6db;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #191f28;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: #3182f6;
+      box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
+    }
+
+    .total-row {
+      margin-top: 2px;
+    }
+
+    .total-label {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .total-price {
+      font-size: 25px;
+      font-weight: 900;
+      color: #e8590c;
+    }
+
+    .customer-section {
+      margin-top: 18px;
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #e5e8eb;
+      border-radius: 16px;
+    }
+
+    .customer-section h2 {
+      margin: 0 0 17px;
+      font-size: 18px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #4e5968;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d6db;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #3182f6;
+      box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
+    }
+
+    .pay-button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 17px;
+      border: 0;
+      border-radius: 13px;
+      background: #3182f6;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition:
+        transform 0.15s ease,
+        opacity 0.15s ease;
+    }
+
+    .pay-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .pay-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      transform: none;
+    }
+
+    .notice {
+      margin: 15px 5px 0;
+      color: #8b95a1;
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .result-box {
+      display: none;
+      margin-bottom: 20px;
+      padding: 22px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #e5e8eb;
+      text-align: center;
+    }
+
+    .result-box.show {
+      display: block;
+    }
+
+    .result-box.success {
+      border-color: #8ce99a;
+      background: #ebfbee;
+    }
+
+    .result-box.error {
+      border-color: #ffa8a8;
+      background: #fff5f5;
+    }
+
+    .result-icon {
+      margin-bottom: 10px;
+      font-size: 42px;
+    }
+
+    .result-title {
+      margin: 0 0 8px;
+      font-size: 22px;
+    }
+
+    .result-message {
+      margin: 0;
+      color: #4e5968;
+      line-height: 1.6;
+      word-break: keep-all;
+    }
+
+    .order-detail {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.74);
+      color: #333d4b;
+      font-size: 14px;
+      line-height: 1.7;
+      text-align: left;
+      overflow-wrap: anywhere;
+    }
+
+    .retry-button {
+      margin-top: 16px;
+      padding: 12px 17px;
+      border: 1px solid #d1d6db;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #333d4b;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .loading {
+      display: none;
+      margin-bottom: 20px;
+      padding: 22px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid #e5e8eb;
+      text-align: center;
+    }
+
+    .loading.show {
+      display: block;
+    }
+
+    .spinner {
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 13px;
+      border: 4px solid #e5e8eb;
+      border-top-color: #3182f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        padding-top: 22px;
+      }
+
+      .header h1 {
+        font-size: 27px;
+      }
+
+      .food-image {
+        height: 190px;
+      }
+
+      .product-media img,
+      .product-media video {
+        height: 190px;
+      }
+
+      .content {
+        padding: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <h1>상품 주문</h1>
+      <p>
+        원하는 상품을 각각 수량을 정해 담고, 토스페이먼츠 결제창에서 한 번에 결제하세요.
+      </p>
+    </header>
+
+    <section id="loadingBox" class="loading">
+      <div class="spinner"></div>
+      <strong>결제를 승인하고 있습니다.</strong>
+      <p>화면을 닫거나 새로고침하지 마세요.</p>
+    </section>
+
+    <section id="resultBox" class="result-box">
+      <div id="resultIcon" class="result-icon"></div>
+      <h2 id="resultTitle" class="result-title"></h2>
+      <p id="resultMessage" class="result-message"></p>
+      <div id="orderDetail" class="order-detail"></div>
+      <button
+        id="retryButton"
+        class="retry-button"
+        type="button"
+        onclick="returnToOrderPage()"
+      >
+        주문 페이지로 돌아가기
+      </button>
+    </section>
+
+    <div id="orderArea">
+      <div id="productsList" class="product-list"></div>
+
+      <section class="card">
+        <div class="content">
+          <div id="summaryList"></div>
+
+          <div class="row total-row">
+            <span class="total-label">총 결제금액</span>
+            <strong id="totalPrice" class="total-price">0원</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="customer-section">
+        <h2>주문자 정보 (선택 입력)</h2>
+
+        <div class="field">
+          <label for="customerName">이름</label>
+          <input
+            id="customerName"
+            type="text"
+            maxlength="30"
+            placeholder="홍길동"
+            autocomplete="name"
+          />
+        </div>
+
+        <div class="field">
+          <label for="customerEmail">이메일</label>
+          <input
+            id="customerEmail"
+            type="email"
+            maxlength="100"
+            placeholder="example@email.com"
+            autocomplete="email"
+          />
+        </div>
+      </section>
+
+      <button id="payButton" class="pay-button" type="button" disabled>
+        상품을 선택해주세요
+      </button>
+
+      <p class="notice">
+        주문자 정보는 입력하지 않아도 결제를 진행할 수 있습니다.<br />
+        테스트 클라이언트 키를 사용하면 실제 금액이 청구되지 않습니다.<br />
+        실결제 운영 전에는 서버 측 주문 금액 검증과 주문 DB가 필요합니다.
+      </p>
+    </div>
+  </main>
+
+  <script>
+    /*
+     * 반드시 토스 개발자센터의 테스트 클라이언트 키로 교체하세요.
+     * test_gck_ 또는 test_ck_ 형태의 클라이언트 키입니다.
+     * 시크릿 키를 여기에 넣으면 안 됩니다.
+     */
+    const CLIENT_KEY = "test_ck_Gv6LjeKD8aKb5O1WPkv4VwYxAdXy";
+
+    const PRODUCTS = [
+      {
+        id: "ice_cream",
+        name: "아이스크림",
+        price: 5000,
+        type: "image",
+        src: "https://github.com/SharpDefine-official/2026_creaction_AXDX_advanced/blob/main/files/%EC%95%84%EC%9D%B4%EC%8A%A4%ED%81%AC%EB%A6%BC.png?raw=true"
+      },
+      {
+        id: "patbingsu",
+        name: "팥빙수",
+        price: 10000,
+        type: "image",
+        src: "https://github.com/SharpDefine-official/2026_creaction_AXDX_advanced/blob/main/files/%ED%8C%A5%EB%B9%99%EC%88%98.png?raw=true"
+      },
+      {
+        id: "test_video",
+        name: "테스트 동영상",
+        price: 50000,
+        type: "video",
+        src: "https://github.com/SharpDefine-official/2026_creaction_AXDX_advanced/raw/refs/heads/main/files/test_video.mp4"
+      }
+    ];
+
+    let quantities = PRODUCTS.map(() => 0);
+
+    const productsListElement =
+      document.getElementById("productsList");
+
+    const summaryListElement = document.getElementById("summaryList");
+    const totalPriceElement = document.getElementById("totalPrice");
+    const payButton = document.getElementById("payButton");
+    const customerNameInput = document.getElementById("customerName");
+    const customerEmailInput = document.getElementById("customerEmail");
+
+    const orderArea = document.getElementById("orderArea");
+    const loadingBox = document.getElementById("loadingBox");
+    const resultBox = document.getElementById("resultBox");
+    const resultIcon = document.getElementById("resultIcon");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultMessage = document.getElementById("resultMessage");
+    const orderDetail = document.getElementById("orderDetail");
+
+    function formatWon(amount) {
+      return new Intl.NumberFormat("ko-KR").format(amount) + "원";
+    }
+
+    function getSelectedItems() {
+      return PRODUCTS.map((product, index) => ({
+        product,
+        quantity: quantities[index]
+      })).filter((item) => item.quantity > 0);
+    }
+
+    function getTotalAmount() {
+      return getSelectedItems().reduce(
+        (sum, item) => sum + item.product.price * item.quantity,
+        0
+      );
+    }
+
+    function buildOrderName(items) {
+      if (items.length === 0) {
+        return "";
+      }
+
+      const first = items[0];
+      const firstLabel =
+        first.quantity > 1
+          ? `${first.product.name} ${first.quantity}개`
+          : first.product.name;
+
+      return items.length === 1
+        ? firstLabel
+        : `${firstLabel} 외 ${items.length - 1}건`;
+    }
+
+    function updateSummary() {
+      const items = getSelectedItems();
+      const amount = getTotalAmount();
+
+      totalPriceElement.textContent = formatWon(amount);
+
+      if (items.length === 0) {
+        summaryListElement.innerHTML =
+          '<p class="summary-empty">담긴 상품이 없습니다.</p>';
+        payButton.textContent = "상품을 선택해주세요";
+        payButton.disabled = true;
+        return;
+      }
+
+      summaryListElement.innerHTML = items
+        .map(
+          (item) => `
+            <div class="row">
+              <span class="row-label">${escapeHtml(item.product.name)} × ${item.quantity}</span>
+              <strong>${formatWon(item.product.price * item.quantity)}</strong>
+            </div>
+          `
+        )
+        .join("");
+
+      payButton.textContent = `${formatWon(amount)} 결제하기`;
+      payButton.disabled = false;
+    }
+
+    function renderProducts() {
+      const quantityOptions = [0, 1, 2, 3, 4, 5]
+        .map((n) => `<option value="${n}">${n}개</option>`)
+        .join("");
+
+      productsListElement.innerHTML = PRODUCTS.map((product, index) => {
+        const media =
+          product.type === "video"
+            ? `<video src="${product.src}" controls muted playsinline preload="metadata"></video>`
+            : `<img src="${product.src}" alt="${escapeHtml(product.name)}" />`;
+
+        return `
+          <section class="product-card card" data-index="${index}">
+            <div class="product-media">${media}</div>
+            <div class="content">
+              <h2 class="product-title">${escapeHtml(product.name)}</h2>
+
+              <div class="row">
+                <div class="row-label">가격</div>
+                <strong>${formatWon(product.price)}</strong>
+              </div>
+
+              <div class="row">
+                <label for="qty-${index}" class="row-label">수량</label>
+                <select id="qty-${index}" class="qty-select" data-index="${index}">
+                  ${quantityOptions}
+                </select>
+              </div>
+            </div>
+          </section>
+        `;
+      }).join("");
+
+      productsListElement
+        .querySelectorAll(".qty-select")
+        .forEach((select) => {
+          select.addEventListener("change", onQuantityChange);
+        });
+    }
+
+    function onQuantityChange(event) {
+      const index = Number(event.target.dataset.index);
+      quantities[index] = Number(event.target.value);
+
+      updateSummary();
+    }
+
+    function createRandomId(prefix) {
+      const randomPart =
+        crypto.randomUUID?.().replaceAll("-", "") ||
+        Math.random().toString(36).slice(2) +
+          Date.now().toString(36);
+
+      return `${prefix}_${randomPart}`.slice(0, 50);
+    }
+
+    function createOrderId() {
+      /*
+       * 토스 orderId는 영문, 숫자, -, _를 사용하고
+       * 6자 이상 64자 이하로 생성합니다.
+       */
+      return createRandomId("ORDER");
+    }
+
+    function createCustomerKey() {
+      return createRandomId("customer");
+    }
+
+    function validateOrderForm() {
+      if (getSelectedItems().length === 0) {
+        alert("주문할 상품을 선택해주세요.");
+        return false;
+      }
+
+      const customerEmail = customerEmailInput.value.trim();
+
+      if (customerEmail && !customerEmailInput.checkValidity()) {
+        alert("올바른 이메일 주소를 입력해주세요.");
+        customerEmailInput.focus();
+        return false;
+      }
+
+      if (
+        !CLIENT_KEY ||
+        CLIENT_KEY === "여기에_토스_테스트_클라이언트_키"
+      ) {
+        alert(
+          "index.html의 CLIENT_KEY를 토스 테스트 클라이언트 키로 교체해주세요."
+        );
+        return false;
+      }
+
+      return true;
+    }
+
+    async function requestPayment() {
+      if (!validateOrderForm()) {
+        return;
+      }
+
+      const items = getSelectedItems();
+      const amount = getTotalAmount();
+      const orderId = createOrderId();
+      const customerKey = createCustomerKey();
+      const orderName = buildOrderName(items);
+
+      /*
+       * 리다이렉트 후 승인 금액을 한 번 더 비교하기 위한 값입니다.
+       * 다만 실서비스에서는 이 값을 브라우저가 아니라 서버 DB에 저장해야 합니다.
+       */
+      sessionStorage.setItem(
+        "pendingOrder",
+        JSON.stringify({
+          orderId,
+          amount,
+          orderName,
+          items: items.map((item) => ({
+            name: item.product.name,
+            unitPrice: item.product.price,
+            quantity: item.quantity
+          }))
+        })
+      );
+
+      payButton.disabled = true;
+      payButton.textContent = "결제창을 열고 있습니다.";
+
+      try {
+        const tossPayments = TossPayments(CLIENT_KEY);
+
+        const payment = tossPayments.payment({
+          customerKey
+        });
+
+        const paymentParams = {
+          method: "CARD",
+
+          amount: {
+            currency: "KRW",
+            value: amount
+          },
+
+          orderId,
+          orderName,
+
+          successUrl:
+            window.location.origin +
+            window.location.pathname +
+            "?payment=success",
+
+          failUrl:
+            window.location.origin +
+            window.location.pathname +
+            "?payment=fail"
+        };
+
+        /*
+         * 주문자 정보는 선택 입력이므로 값이 있을 때만 전달합니다.
+         */
+        const customerName = customerNameInput.value.trim();
+        const customerEmail = customerEmailInput.value.trim();
+
+        if (customerName) {
+          paymentParams.customerName = customerName;
+        }
+
+        if (customerEmail) {
+          paymentParams.customerEmail = customerEmail;
+        }
+
+        await payment.requestPayment(paymentParams);
+      } catch (error) {
+        console.error(error);
+
+        payButton.disabled = false;
+        updateSummary();
+
+        alert(
+          error?.message ||
+          "결제창을 여는 중 오류가 발생했습니다."
+        );
+      }
+    }
+
+    async function confirmPayment() {
+      const params = new URLSearchParams(window.location.search);
+
+      const paymentKey = params.get("paymentKey");
+      const orderId = params.get("orderId");
+      const amount = Number(params.get("amount"));
+
+      const pendingOrderText =
+        sessionStorage.getItem("pendingOrder");
+
+      let pendingOrder = null;
+
+      try {
+        pendingOrder = pendingOrderText
+          ? JSON.parse(pendingOrderText)
+          : null;
+      } catch (error) {
+        console.error("주문 정보 읽기 실패:", error);
+      }
+
+      orderArea.style.display = "none";
+      loadingBox.classList.add("show");
+
+      if (!paymentKey || !orderId || !Number.isFinite(amount)) {
+        loadingBox.classList.remove("show");
+
+        showResult({
+          success: false,
+          title: "결제 정보가 올바르지 않습니다.",
+          message:
+            "결제 승인에 필요한 정보가 전달되지 않았습니다."
+        });
+
+        return;
+      }
+
+      /*
+       * 브라우저에 저장했던 주문 정보와 리다이렉트 결과를 비교합니다.
+       * 이것은 테스트용 보조 검증입니다.
+       *
+       * 실결제 서비스에서는 confirm.js가 서버 DB의 주문 금액과
+       * 반드시 대조해야 합니다.
+       */
+      if (
+        pendingOrder &&
+        (
+          pendingOrder.orderId !== orderId ||
+          Number(pendingOrder.amount) !== amount
+        )
+      ) {
+        loadingBox.classList.remove("show");
+
+        showResult({
+          success: false,
+          title: "주문 정보가 일치하지 않습니다.",
+          message:
+            "결제 요청 금액 또는 주문번호가 변경되었습니다."
+        });
+
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "/.netlify/functions/confirm",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              paymentKey,
+              orderId,
+              amount
+            })
+          }
+        );
+
+        let result;
+
+        try {
+          result = await response.json();
+        } catch {
+          result = {
+            message:
+              "승인 서버에서 올바르지 않은 응답을 반환했습니다."
+          };
+        }
+
+        loadingBox.classList.remove("show");
+
+        if (!response.ok) {
+          throw new Error(
+            result.message ||
+            result.error?.message ||
+            result.code ||
+            "결제 승인에 실패했습니다."
+          );
+        }
+
+        sessionStorage.removeItem("pendingOrder");
+
+        showResult({
+          success: true,
+          title: "결제가 완료되었습니다.",
+          message: "주문이 정상적으로 승인되었습니다.",
+          detail: `
+            ${buildOrderItemsDetailHtml(pendingOrder)}
+            <strong>주문번호</strong>: ${escapeHtml(orderId)}<br />
+            <strong>결제금액</strong>: ${formatWon(amount)}<br />
+            <strong>결제상태</strong>: ${escapeHtml(result.status || "DONE")}
+          `
+        });
+      } catch (error) {
+        console.error("결제 승인 오류:", error);
+
+        loadingBox.classList.remove("show");
+
+        showResult({
+          success: false,
+          title: "결제 승인에 실패했습니다.",
+          message:
+            error?.message ||
+            "잠시 후 다시 시도해주세요.",
+          detail: `
+            <strong>주문번호</strong>: ${escapeHtml(orderId)}<br />
+            <strong>요청금액</strong>: ${formatWon(amount)}
+          `
+        });
+      }
+    }
+
+    function handlePaymentFailure() {
+      const params = new URLSearchParams(window.location.search);
+
+      const code = params.get("code") || "UNKNOWN_ERROR";
+      const message =
+        params.get("message") ||
+        "결제 과정이 취소되었거나 실패했습니다.";
+      const orderId = params.get("orderId");
+
+      orderArea.style.display = "none";
+
+      showResult({
+        success: false,
+        title:
+          code === "PAY_PROCESS_CANCELED"
+            ? "결제가 취소되었습니다."
+            : "결제를 완료하지 못했습니다.",
+        message,
+        detail: `
+          <strong>오류 코드</strong>: ${escapeHtml(code)}
+          ${
+            orderId
+              ? `<br /><strong>주문번호</strong>: ${escapeHtml(orderId)}`
+              : ""
+          }
+        `
+      });
+    }
+
+    function showResult({
+      success,
+      title,
+      message,
+      detail = ""
+    }) {
+      resultBox.className =
+        `result-box show ${success ? "success" : "error"}`;
+
+      resultIcon.textContent = success ? "✅" : "⚠️";
+      resultTitle.textContent = title;
+      resultMessage.textContent = message;
+
+      if (detail) {
+        orderDetail.style.display = "block";
+        orderDetail.innerHTML = detail;
+      } else {
+        orderDetail.style.display = "none";
+        orderDetail.innerHTML = "";
+      }
+    }
+
+    function returnToOrderPage() {
+      sessionStorage.removeItem("pendingOrder");
+
+      window.location.href =
+        window.location.origin + window.location.pathname;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function buildOrderItemsDetailHtml(pendingOrder) {
+      if (pendingOrder?.items?.length) {
+        const lines = pendingOrder.items.map(
+          (item) =>
+            `${escapeHtml(item.name)} × ${item.quantity} (${formatWon(item.unitPrice * item.quantity)})`
+        );
+
+        return `<strong>주문상품</strong>:<br />${lines.join("<br />")}<br />`;
+      }
+
+      if (pendingOrder?.orderName) {
+        return `<strong>주문상품</strong>: ${escapeHtml(pendingOrder.orderName)}<br />`;
+      }
+
+      return "";
+    }
+
+    function initializePage() {
+      renderProducts();
+
+      payButton.addEventListener("click", requestPayment);
+
+      updateSummary();
+
+      const params = new URLSearchParams(window.location.search);
+      const paymentResult = params.get("payment");
+
+      if (paymentResult === "success") {
+        confirmPayment();
+      } else if (paymentResult === "fail") {
+        handlePaymentFailure();
+      }
+    }
+
+    initializePage();
+  </script>
+</body>
+</html>
