@@ -2,13 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>반려동물 커플티 주문</title>
 
-  <title>야키소바 주문</title>
-
+  <!-- 토스페이먼츠 결제 SDK -->
   <script src="https://js.tosspayments.com/v2/standard"></script>
 
   <style>
@@ -19,7 +16,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: #f4f6f8;
+      background: #f5f6f8;
       color: #191f28;
       font-family:
         Pretendard,
@@ -30,8 +27,7 @@
     }
 
     button,
-    select,
-    input {
+    select {
       font: inherit;
     }
 
@@ -66,15 +62,47 @@
       box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
     }
 
-    .food-image {
+    .product-image {
+      position: relative;
       display: grid;
       place-items: center;
-      height: 220px;
+      min-height: 280px;
+      padding: 20px;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 25% 20%, #ffd58d, transparent 28%),
-        linear-gradient(135deg, #ff9f43, #ff7043);
-      font-size: 92px;
-      user-select: none;
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,0.85), transparent 24%),
+        radial-gradient(circle at 82% 28%, rgba(255,255,255,0.55), transparent 20%),
+        linear-gradient(135deg, #ffe2e8 0%, #fff1d9 48%, #e3f4ff 100%);
+    }
+
+    .product-image::before,
+    .product-image::after {
+      position: absolute;
+      content: "";
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .product-image::before {
+      width: 150px;
+      height: 150px;
+      left: -55px;
+      bottom: -65px;
+    }
+
+    .product-image::after {
+      width: 110px;
+      height: 110px;
+      right: -35px;
+      top: -35px;
+    }
+
+    .product-art {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 410px);
+      height: auto;
+      filter: drop-shadow(0 16px 18px rgba(80, 48, 62, 0.13));
     }
 
     .content {
@@ -86,10 +114,10 @@
       margin-bottom: 11px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: #fff3e8;
-      color: #e85d04;
+      background: #fff0f3;
+      color: #e64980;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .product-title {
@@ -98,9 +126,37 @@
     }
 
     .description {
-      margin: 0 0 24px;
+      margin: 0 0 18px;
       color: #6b7684;
       line-height: 1.65;
+    }
+
+    .option-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .option-item {
+      padding: 13px 14px;
+      border: 1px solid #edf0f2;
+      border-radius: 12px;
+      background: #f9fafb;
+    }
+
+    .option-label {
+      display: block;
+      margin-bottom: 4px;
+      color: #8b95a1;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .option-value {
+      color: #333d4b;
+      font-size: 15px;
+      font-weight: 800;
     }
 
     .row {
@@ -113,11 +169,13 @@
     }
 
     .row-label {
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .unit-price {
-      color: #4e5968;
+      margin-top: 4px;
+      color: #8b95a1;
+      font-size: 13px;
     }
 
     select {
@@ -141,55 +199,13 @@
 
     .total-label {
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .total-price {
       font-size: 25px;
       font-weight: 900;
-      color: #e8590c;
-    }
-
-    .customer-section {
-      margin-top: 18px;
-      padding: 20px;
-      background: #ffffff;
-      border: 1px solid #e5e8eb;
-      border-radius: 16px;
-    }
-
-    .customer-section h2 {
-      margin: 0 0 17px;
-      font-size: 18px;
-    }
-
-    .field {
-      margin-bottom: 15px;
-    }
-
-    .field:last-child {
-      margin-bottom: 0;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 7px;
-      color: #4e5968;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .field input {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid #d1d6db;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .field input:focus {
-      border-color: #3182f6;
-      box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
+      color: #e64980;
     }
 
     .pay-button {
@@ -201,7 +217,7 @@
       background: #3182f6;
       color: #ffffff;
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       transition:
         transform 0.15s ease,
@@ -226,17 +242,19 @@
       text-align: center;
     }
 
-    .result-box {
+    .result-box,
+    .loading {
       display: none;
       margin-bottom: 20px;
       padding: 22px;
+      border: 1px solid #e5e8eb;
       border-radius: 16px;
       background: #ffffff;
-      border: 1px solid #e5e8eb;
       text-align: center;
     }
 
-    .result-box.show {
+    .result-box.show,
+    .loading.show {
       display: block;
     }
 
@@ -286,22 +304,8 @@
       border-radius: 10px;
       background: #ffffff;
       color: #333d4b;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-    }
-
-    .loading {
-      display: none;
-      margin-bottom: 20px;
-      padding: 22px;
-      border-radius: 16px;
-      background: #ffffff;
-      border: 1px solid #e5e8eb;
-      text-align: center;
-    }
-
-    .loading.show {
-      display: block;
     }
 
     .spinner {
@@ -329,8 +333,8 @@
         font-size: 27px;
       }
 
-      .food-image {
-        height: 190px;
+      .product-image {
+        min-height: 235px;
       }
 
       .content {
@@ -343,10 +347,8 @@
 <body>
   <main class="page">
     <header class="header">
-      <h1>야키소바 주문</h1>
-      <p>
-        수량을 선택한 후 토스페이먼츠 결제창에서 결제를 진행하세요.
-      </p>
+      <h1>반려동물 커플티 주문</h1>
+      <p>수량을 선택한 후 토스페이먼츠 결제창에서 바로 결제하세요.</p>
     </header>
 
     <section id="loadingBox" class="loading">
@@ -372,75 +374,131 @@
 
     <div id="orderArea">
       <section class="card">
-        <div class="food-image" aria-label="야키소바">
-          🍜
+        <div class="product-image" aria-label="사람과 반려동물이 함께 입는 커플티 상품 이미지">
+          <!-- 별도 이미지 파일 없이 사용할 수 있는 내장 SVG 상품 이미지 -->
+          <svg
+            class="product-art"
+            viewBox="0 0 620 350"
+            role="img"
+            aria-labelledby="productImageTitle productImageDescription"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title id="productImageTitle">반려동물 커플티</title>
+            <desc id="productImageDescription">사람용 티셔츠와 반려동물용 티셔츠가 나란히 놓인 일러스트</desc>
+
+            <ellipse cx="310" cy="309" rx="250" ry="24" fill="rgba(98, 70, 80, 0.12)" />
+
+            <!-- 사람용 티셔츠 -->
+            <g transform="translate(75 38)">
+              <path
+                d="M92 27 L143 4 Q156 0 169 10 L206 40 L183 82 L157 66 L157 260 Q157 276 140 276 H48 Q31 276 31 260 V66 L5 82 L-18 40 L19 10 Q32 0 45 4 Z"
+                fill="#ffffff"
+                stroke="#d86b8a"
+                stroke-width="7"
+                stroke-linejoin="round"
+              />
+              <path d="M73 18 Q94 44 115 18" fill="none" stroke="#d86b8a" stroke-width="7" stroke-linecap="round" />
+              <circle cx="94" cy="133" r="48" fill="#ffd7e2" />
+              <path d="M69 129 Q72 99 94 99 Q116 99 119 129" fill="#fff" />
+              <circle cx="79" cy="126" r="5" fill="#5a4850" />
+              <circle cx="109" cy="126" r="5" fill="#5a4850" />
+              <path d="M86 143 Q94 151 102 143" fill="none" stroke="#5a4850" stroke-width="5" stroke-linecap="round" />
+              <path d="M63 108 L53 89 L79 101" fill="#ffd7e2" stroke="#d86b8a" stroke-width="4" stroke-linejoin="round" />
+              <path d="M125 108 L135 89 L109 101" fill="#ffd7e2" stroke="#d86b8a" stroke-width="4" stroke-linejoin="round" />
+              <text x="94" y="205" text-anchor="middle" fill="#d34e78" font-size="22" font-weight="800" font-family="Arial, sans-serif">BEST FRIEND</text>
+            </g>
+
+            <!-- 하트 연결 -->
+            <g transform="translate(295 126)">
+              <path
+                d="M26 12 C26 -6 0 -10 0 11 C0 29 26 43 26 43 C26 43 52 29 52 11 C52 -10 26 -6 26 12 Z"
+                fill="#ff6b9a"
+              />
+              <circle cx="26" cy="27" r="39" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="5" />
+            </g>
+
+            <!-- 반려동물용 티셔츠 -->
+            <g transform="translate(380 92)">
+              <path
+                d="M62 27 L96 9 Q108 3 119 12 L144 34 L128 66 L111 55 L111 206 Q111 221 96 221 H32 Q17 221 17 206 V55 L0 66 L-16 34 L9 12 Q20 3 32 9 Z"
+                fill="#ffffff"
+                stroke="#4c9fbd"
+                stroke-width="7"
+                stroke-linejoin="round"
+              />
+              <path d="M49 19 Q64 39 79 19" fill="none" stroke="#4c9fbd" stroke-width="7" stroke-linecap="round" />
+              <circle cx="64" cy="110" r="36" fill="#d8f2ff" />
+              <path d="M43 105 Q45 82 64 82 Q83 82 85 105" fill="#fff" />
+              <circle cx="52" cy="105" r="4" fill="#46545a" />
+              <circle cx="76" cy="105" r="4" fill="#46545a" />
+              <path d="M58 118 Q64 124 70 118" fill="none" stroke="#46545a" stroke-width="4" stroke-linecap="round" />
+              <path d="M39 90 L30 75 L51 84" fill="#d8f2ff" stroke="#4c9fbd" stroke-width="4" stroke-linejoin="round" />
+              <path d="M89 90 L98 75 L77 84" fill="#d8f2ff" stroke="#4c9fbd" stroke-width="4" stroke-linejoin="round" />
+              <text x="64" y="165" text-anchor="middle" fill="#3486a4" font-size="18" font-weight="800" font-family="Arial, sans-serif">MY HUMAN</text>
+            </g>
+
+            <g fill="#ffffff" opacity="0.9">
+              <circle cx="63" cy="57" r="8" />
+              <circle cx="548" cy="68" r="11" />
+              <circle cx="565" cy="219" r="7" />
+              <circle cx="49" cy="253" r="6" />
+            </g>
+          </svg>
         </div>
 
         <div class="content">
-          <span class="badge">인기 메뉴</span>
+          <span class="badge">반려동물 패션</span>
 
-          <h2 class="product-title">야키소바</h2>
+          <h2 class="product-title">반려동물 커플티</h2>
 
           <p class="description">
-            쫄깃한 면과 채소를 고소한 소스에 볶아 만든 일본식 볶음면입니다.
+            보호자와 반려동물이 함께 맞춰 입을 수 있는 편안한 커플 티셔츠입니다.
+            사이즈와 성별 구분 없이 누구나 착용할 수 있습니다.
           </p>
+
+          <div class="option-list">
+            <div class="option-item">
+              <span class="option-label">사이즈</span>
+              <span class="option-value">Freesize</span>
+            </div>
+
+            <div class="option-item">
+              <span class="option-label">성별</span>
+              <span class="option-value">구분 없음</span>
+            </div>
+          </div>
 
           <div class="row">
             <div>
               <div class="row-label">가격</div>
-              <div class="unit-price">1개 기준</div>
+              <div class="unit-price">1세트 기준</div>
             </div>
 
-            <strong>1,000원</strong>
+            <strong>50,000원</strong>
           </div>
 
           <div class="row">
             <label for="quantity" class="row-label">수량</label>
 
             <select id="quantity">
-              <option value="1">1개</option>
-              <option value="2">2개</option>
-              <option value="3">3개</option>
-              <option value="4">4개</option>
-              <option value="5">5개</option>
+              <option value="1">1세트</option>
+              <option value="2">2세트</option>
+              <option value="3">3세트</option>
+              <option value="4">4세트</option>
+              <option value="5">5세트</option>
             </select>
           </div>
 
           <div class="row total-row">
             <span class="total-label">총 결제금액</span>
-            <strong id="totalPrice" class="total-price">1,000원</strong>
+            <strong id="totalPrice" class="total-price">50,000원</strong>
           </div>
         </div>
       </section>
 
-      <section class="customer-section">
-        <h2>주문자 정보</h2>
-
-        <div class="field">
-          <label for="customerName">이름</label>
-          <input
-            id="customerName"
-            type="text"
-            maxlength="30"
-            placeholder="홍길동"
-            autocomplete="name"
-          />
-        </div>
-
-        <div class="field">
-          <label for="customerEmail">이메일</label>
-          <input
-            id="customerEmail"
-            type="email"
-            maxlength="100"
-            placeholder="example@email.com"
-            autocomplete="email"
-          />
-        </div>
-      </section>
-
+      <!-- 주문자 이름과 이메일 입력 없이 바로 결제 -->
       <button id="payButton" class="pay-button" type="button">
-        1,000원 결제하기
+        50,000원 결제하기
       </button>
 
       <p class="notice">
@@ -452,22 +510,20 @@
 
   <script>
     /*
-     * 반드시 토스 개발자센터의 테스트 클라이언트 키로 교체하세요.
+     * 토스 개발자센터의 테스트 클라이언트 키를 사용하세요.
      * test_gck_ 또는 test_ck_ 형태의 클라이언트 키입니다.
-     * 시크릿 키를 여기에 넣으면 안 됩니다.
+     * 시크릿 키는 절대로 HTML에 넣으면 안 됩니다.
      */
     const CLIENT_KEY = "test_ck_Gv6LjeKD8aKb5O1WPkv4VwYxAdXy";
 
     const PRODUCT = {
-      name: "야키소바",
-      unitPrice: 1000
+      name: "반려동물 커플티",
+      unitPrice: 50000
     };
 
     const quantitySelect = document.getElementById("quantity");
     const totalPriceElement = document.getElementById("totalPrice");
     const payButton = document.getElementById("payButton");
-    const customerNameInput = document.getElementById("customerName");
-    const customerEmailInput = document.getElementById("customerEmail");
 
     const orderArea = document.getElementById("orderArea");
     const loadingBox = document.getElementById("loadingBox");
@@ -499,46 +555,21 @@
     function createRandomId(prefix) {
       const randomPart =
         crypto.randomUUID?.().replaceAll("-", "") ||
-        Math.random().toString(36).slice(2) +
-          Date.now().toString(36);
+        Math.random().toString(36).slice(2) + Date.now().toString(36);
 
       return `${prefix}_${randomPart}`.slice(0, 50);
     }
 
     function createOrderId() {
-      /*
-       * 토스 orderId는 영문, 숫자, -, _를 사용하고
-       * 6자 이상 64자 이하로 생성합니다.
-       */
-      return createRandomId("YAKISOBA");
+      return createRandomId("PET_COUPLE_TEE");
     }
 
     function createCustomerKey() {
-      return createRandomId("customer");
+      /* 비회원 결제를 위한 임시 고객 키 */
+      return createRandomId("guest");
     }
 
-    function validateOrderForm() {
-      const customerName = customerNameInput.value.trim();
-      const customerEmail = customerEmailInput.value.trim();
-
-      if (!customerName) {
-        alert("주문자 이름을 입력해주세요.");
-        customerNameInput.focus();
-        return false;
-      }
-
-      if (!customerEmail) {
-        alert("이메일을 입력해주세요.");
-        customerEmailInput.focus();
-        return false;
-      }
-
-      if (!customerEmailInput.checkValidity()) {
-        alert("올바른 이메일 주소를 입력해주세요.");
-        customerEmailInput.focus();
-        return false;
-      }
-
+    function validatePaymentSettings() {
       if (
         !CLIENT_KEY ||
         CLIENT_KEY === "여기에_토스_테스트_클라이언트_키"
@@ -553,7 +584,7 @@
     }
 
     async function requestPayment() {
-      if (!validateOrderForm()) {
+      if (!validatePaymentSettings()) {
         return;
       }
 
@@ -563,8 +594,8 @@
       const customerKey = createCustomerKey();
 
       /*
-       * 리다이렉트 후 승인 금액을 한 번 더 비교하기 위한 값입니다.
-       * 다만 실서비스에서는 이 값을 브라우저가 아니라 서버 DB에 저장해야 합니다.
+       * 리다이렉트 후 승인 금액 비교를 위한 테스트용 정보입니다.
+       * 실서비스에서는 주문 정보를 서버 DB에 저장해야 합니다.
        */
       sessionStorage.setItem(
         "pendingOrder",
@@ -572,7 +603,7 @@
           orderId,
           amount,
           quantity,
-          orderName: `${PRODUCT.name} ${quantity}개`
+          orderName: `${PRODUCT.name} ${quantity}세트`
         })
       );
 
@@ -581,10 +612,7 @@
 
       try {
         const tossPayments = TossPayments(CLIENT_KEY);
-
-        const payment = tossPayments.payment({
-          customerKey
-        });
+        const payment = tossPayments.payment({ customerKey });
 
         await payment.requestPayment({
           method: "CARD",
@@ -598,10 +626,9 @@
           orderName:
             quantity === 1
               ? PRODUCT.name
-              : `${PRODUCT.name} ${quantity}개`,
+              : `${PRODUCT.name} ${quantity}세트`,
 
-          customerName: customerNameInput.value.trim(),
-          customerEmail: customerEmailInput.value.trim(),
+          /* 주문자 이름과 이메일은 전달하지 않습니다. */
 
           successUrl:
             window.location.origin +
@@ -633,9 +660,7 @@
       const orderId = params.get("orderId");
       const amount = Number(params.get("amount"));
 
-      const pendingOrderText =
-        sessionStorage.getItem("pendingOrder");
-
+      const pendingOrderText = sessionStorage.getItem("pendingOrder");
       let pendingOrder = null;
 
       try {
@@ -655,20 +680,12 @@
         showResult({
           success: false,
           title: "결제 정보가 올바르지 않습니다.",
-          message:
-            "결제 승인에 필요한 정보가 전달되지 않았습니다."
+          message: "결제 승인에 필요한 정보가 전달되지 않았습니다."
         });
 
         return;
       }
 
-      /*
-       * 브라우저에 저장했던 주문 정보와 리다이렉트 결과를 비교합니다.
-       * 이것은 테스트용 보조 검증입니다.
-       *
-       * 실결제 서비스에서는 confirm.js가 서버 DB의 주문 금액과
-       * 반드시 대조해야 합니다.
-       */
       if (
         pendingOrder &&
         (
@@ -681,8 +698,7 @@
         showResult({
           success: false,
           title: "주문 정보가 일치하지 않습니다.",
-          message:
-            "결제 요청 금액 또는 주문번호가 변경되었습니다."
+          message: "결제 요청 금액 또는 주문번호가 변경되었습니다."
         });
 
         return;
@@ -710,8 +726,7 @@
           result = await response.json();
         } catch {
           result = {
-            message:
-              "승인 서버에서 올바르지 않은 응답을 반환했습니다."
+            message: "승인 서버에서 올바르지 않은 응답을 반환했습니다."
           };
         }
 
@@ -731,8 +746,7 @@
         showResult({
           success: true,
           title: "결제가 완료되었습니다.",
-          message:
-            "야키소바 주문이 정상적으로 승인되었습니다.",
+          message: "반려동물 커플티 주문이 정상적으로 승인되었습니다.",
           detail: `
             <strong>주문번호</strong>: ${escapeHtml(orderId)}<br />
             <strong>결제금액</strong>: ${formatWon(amount)}<br />
@@ -747,9 +761,7 @@
         showResult({
           success: false,
           title: "결제 승인에 실패했습니다.",
-          message:
-            error?.message ||
-            "잠시 후 다시 시도해주세요.",
+          message: error?.message || "잠시 후 다시 시도해주세요.",
           detail: `
             <strong>주문번호</strong>: ${escapeHtml(orderId)}<br />
             <strong>요청금액</strong>: ${formatWon(amount)}
@@ -787,12 +799,7 @@
       });
     }
 
-    function showResult({
-      success,
-      title,
-      message,
-      detail = ""
-    }) {
+    function showResult({ success, title, message, detail = "" }) {
       resultBox.className =
         `result-box show ${success ? "success" : "error"}`;
 
@@ -811,7 +818,6 @@
 
     function returnToOrderPage() {
       sessionStorage.removeItem("pendingOrder");
-
       window.location.href =
         window.location.origin + window.location.pathname;
     }
