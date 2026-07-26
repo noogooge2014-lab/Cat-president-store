@@ -7,9 +7,8 @@
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>반려동물 커플티 주문</title>
+  <title>야키소바 주문</title>
 
-  <!-- 토스페이먼츠 결제 SDK -->
   <script src="https://js.tosspayments.com/v2/standard"></script>
 
   <style>
@@ -20,7 +19,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: #f5f6f8;
+      background: #f4f6f8;
       color: #191f28;
       font-family:
         Pretendard,
@@ -31,24 +30,25 @@
     }
 
     button,
-    select {
+    select,
+    input {
       font: inherit;
     }
 
     .page {
       width: min(100%, 560px);
       margin: 0 auto;
-      padding: 30px 18px 60px;
+      padding: 32px 18px 60px;
     }
 
     .header {
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .header h1 {
       margin: 0 0 8px;
       font-size: 30px;
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
     .header p {
@@ -62,73 +62,67 @@
       overflow: hidden;
       background: #ffffff;
       border: 1px solid #e5e8eb;
-      border-radius: 22px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+      border-radius: 20px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
     }
 
-    .product-image {
-      display: block;
-      width: 100%;
-      height: auto;
-      background: #f8eee6;
+    .food-image {
+      display: grid;
+      place-items: center;
+      height: 220px;
+      background:
+        radial-gradient(circle at 25% 20%, #ffd58d, transparent 28%),
+        linear-gradient(135deg, #ff9f43, #ff7043);
+      font-size: 92px;
+      user-select: none;
     }
 
     .content {
-      padding: 25px;
+      padding: 24px;
     }
 
     .badge {
       display: inline-block;
-      margin-bottom: 12px;
-      padding: 7px 11px;
+      margin-bottom: 11px;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: #fff0e6;
-      color: #e8590c;
+      background: #fff3e8;
+      color: #e85d04;
       font-size: 13px;
-      font-weight: 800;
-    }
-
-    .product-title {
-      margin: 0 0 10px;
-      font-size: 26px;
-      line-height: 1.35;
-    }
-
-    .description {
-      margin: 0 0 22px;
-      color: #6b7684;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .info-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 17px 0;
-      border-top: 1px solid #edf0f2;
-    }
-
-    .info-label {
-      color: #4e5968;
       font-weight: 700;
     }
 
-    .info-value {
-      text-align: right;
-      font-weight: 800;
+    .product-title {
+      margin: 0 0 8px;
+      font-size: 25px;
     }
 
-    .price {
-      color: #e8590c;
-      font-size: 22px;
-      font-weight: 900;
+    .description {
+      margin: 0 0 24px;
+      color: #6b7684;
+      line-height: 1.65;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 0;
+      border-top: 1px solid #edf0f2;
+    }
+
+    .row-label {
+      font-weight: 700;
+    }
+
+    .unit-price {
+      color: #4e5968;
     }
 
     select {
-      min-width: 108px;
-      padding: 11px 34px 11px 13px;
+      min-width: 105px;
+      padding: 11px 36px 11px 14px;
       border: 1px solid #d1d6db;
       border-radius: 10px;
       background: #ffffff;
@@ -141,38 +135,61 @@
       box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
     }
 
-    .summary-card {
-      margin-top: 18px;
-      padding: 22px;
-      background: #ffffff;
-      border: 1px solid #e5e8eb;
-      border-radius: 18px;
-    }
-
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 13px;
-      color: #4e5968;
-    }
-
-    .summary-row:last-child {
-      margin-bottom: 0;
-    }
-
     .total-row {
-      margin-top: 17px;
-      padding-top: 18px;
-      border-top: 1px solid #edf0f2;
-      color: #191f28;
-      font-size: 19px;
-      font-weight: 900;
+      margin-top: 2px;
+    }
+
+    .total-label {
+      font-size: 18px;
+      font-weight: 800;
     }
 
     .total-price {
-      color: #e8590c;
       font-size: 25px;
+      font-weight: 900;
+      color: #e8590c;
+    }
+
+    .customer-section {
+      margin-top: 18px;
+      padding: 20px;
+      background: #ffffff;
+      border: 1px solid #e5e8eb;
+      border-radius: 16px;
+    }
+
+    .customer-section h2 {
+      margin: 0 0 17px;
+      font-size: 18px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #4e5968;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d6db;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #3182f6;
+      box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.12);
     }
 
     .pay-button {
@@ -180,11 +197,11 @@
       margin-top: 20px;
       padding: 17px;
       border: 0;
-      border-radius: 14px;
+      border-radius: 13px;
       background: #3182f6;
       color: #ffffff;
       font-size: 18px;
-      font-weight: 900;
+      font-weight: 800;
       cursor: pointer;
       transition:
         transform 0.15s ease,
@@ -202,58 +219,59 @@
     }
 
     .notice {
-      margin: 15px 4px 0;
+      margin: 15px 5px 0;
       color: #8b95a1;
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.55;
       text-align: center;
     }
 
-    .status-box {
+    .result-box {
       display: none;
       margin-bottom: 20px;
-      padding: 24px;
-      border-radius: 18px;
+      padding: 22px;
+      border-radius: 16px;
       background: #ffffff;
       border: 1px solid #e5e8eb;
       text-align: center;
     }
 
-    .status-box.show {
+    .result-box.show {
       display: block;
     }
 
-    .status-box.success {
+    .result-box.success {
       border-color: #8ce99a;
       background: #ebfbee;
     }
 
-    .status-box.error {
+    .result-box.error {
       border-color: #ffa8a8;
       background: #fff5f5;
     }
 
-    .status-icon {
+    .result-icon {
       margin-bottom: 10px;
       font-size: 42px;
     }
 
-    .status-title {
+    .result-title {
       margin: 0 0 8px;
       font-size: 22px;
     }
 
-    .status-message {
+    .result-message {
       margin: 0;
       color: #4e5968;
       line-height: 1.6;
+      word-break: keep-all;
     }
 
     .order-detail {
-      margin-top: 17px;
+      margin-top: 16px;
       padding: 14px;
-      border-radius: 11px;
-      background: rgba(255, 255, 255, 0.78);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.74);
       color: #333d4b;
       font-size: 14px;
       line-height: 1.7;
@@ -262,34 +280,34 @@
     }
 
     .retry-button {
-      margin-top: 17px;
-      padding: 12px 18px;
+      margin-top: 16px;
+      padding: 12px 17px;
       border: 1px solid #d1d6db;
       border-radius: 10px;
       background: #ffffff;
       color: #333d4b;
-      font-weight: 800;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .loading-box {
+    .loading {
       display: none;
       margin-bottom: 20px;
-      padding: 25px;
-      border-radius: 18px;
+      padding: 22px;
+      border-radius: 16px;
       background: #ffffff;
       border: 1px solid #e5e8eb;
       text-align: center;
     }
 
-    .loading-box.show {
+    .loading.show {
       display: block;
     }
 
     .spinner {
-      width: 36px;
-      height: 36px;
-      margin: 0 auto 14px;
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 13px;
       border: 4px solid #e5e8eb;
       border-top-color: #3182f6;
       border-radius: 50%;
@@ -311,6 +329,10 @@
         font-size: 27px;
       }
 
+      .food-image {
+        height: 190px;
+      }
+
       .content {
         padding: 21px;
       }
@@ -321,25 +343,25 @@
 <body>
   <main class="page">
     <header class="header">
-      <h1>반려동물 커플티 주문</h1>
+      <h1>야키소바 주문</h1>
       <p>
-        반려인과 반려동물이 함께 입는 편안한 커플티입니다.
+        수량을 선택한 후 토스페이먼츠 결제창에서 결제를 진행하세요.
       </p>
     </header>
 
-    <section id="loadingBox" class="loading-box">
+    <section id="loadingBox" class="loading">
       <div class="spinner"></div>
       <strong>결제를 승인하고 있습니다.</strong>
       <p>화면을 닫거나 새로고침하지 마세요.</p>
     </section>
 
-    <section id="statusBox" class="status-box">
-      <div id="statusIcon" class="status-icon"></div>
-      <h2 id="statusTitle" class="status-title"></h2>
-      <p id="statusMessage" class="status-message"></p>
+    <section id="resultBox" class="result-box">
+      <div id="resultIcon" class="result-icon"></div>
+      <h2 id="resultTitle" class="result-title"></h2>
+      <p id="resultMessage" class="result-message"></p>
       <div id="orderDetail" class="order-detail"></div>
-
       <button
+        id="retryButton"
         class="retry-button"
         type="button"
         onclick="returnToOrderPage()"
@@ -350,187 +372,30 @@
 
     <div id="orderArea">
       <section class="card">
-        <!-- 외부 이미지 파일이 필요 없는 내장 SVG 상품 이미지 -->
-        <svg
-          class="product-image"
-          viewBox="0 0 1200 800"
-          xmlns="http://www.w3.org/2000/svg"
-          role="img"
-          aria-label="반려동물 커플티 상품 이미지"
-        >
-          <defs>
-            <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#fff7ef" />
-              <stop offset="100%" stop-color="#ead7c7" />
-            </linearGradient>
-
-            <linearGradient id="shirtColor" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#35383d" />
-              <stop offset="100%" stop-color="#17191c" />
-            </linearGradient>
-
-            <filter id="shadow">
-              <feDropShadow
-                dx="0"
-                dy="18"
-                stdDeviation="22"
-                flood-color="#000000"
-                flood-opacity="0.2"
-              />
-            </filter>
-          </defs>
-
-          <rect width="1200" height="800" fill="url(#background)" />
-
-          <circle cx="160" cy="130" r="90" fill="#ffffff" opacity="0.35" />
-          <circle cx="1040" cy="670" r="145" fill="#ffffff" opacity="0.25" />
-
-          <!-- 사람용 티셔츠 -->
-          <g filter="url(#shadow)" transform="translate(155 130)">
-            <path
-              d="
-                M210 35
-                L320 80
-                L420 30
-                L530 135
-                L455 220
-                L405 178
-                L405 555
-                L115 555
-                L115 178
-                L65 220
-                L0 135
-                L110 30
-                L210 80
-                Z
-              "
-              fill="url(#shirtColor)"
-            />
-
-            <path
-              d="M210 35 C225 95 305 95 320 35"
-              fill="none"
-              stroke="#555a61"
-              stroke-width="25"
-            />
-
-            <text
-              x="260"
-              y="315"
-              text-anchor="middle"
-              fill="#ffffff"
-              font-size="78"
-              font-family="Arial, sans-serif"
-            >
-              ♥
-            </text>
-
-            <text
-              x="260"
-              y="375"
-              text-anchor="middle"
-              fill="#ffffff"
-              font-size="27"
-              font-weight="700"
-              font-family="Arial, sans-serif"
-            >
-              TOGETHER
-            </text>
-          </g>
-
-          <!-- 반려동물용 티셔츠 -->
-          <g filter="url(#shadow)" transform="translate(705 300)">
-            <path
-              d="
-                M125 25
-                L195 55
-                L260 25
-                L335 95
-                L285 155
-                L250 125
-                L250 355
-                L70 355
-                L70 125
-                L35 155
-                L0 95
-                L75 25
-                L125 55
-                Z
-              "
-              fill="url(#shirtColor)"
-            />
-
-            <path
-              d="M125 25 C135 68 185 68 195 25"
-              fill="none"
-              stroke="#555a61"
-              stroke-width="17"
-            />
-
-            <text
-              x="160"
-              y="220"
-              text-anchor="middle"
-              fill="#ffffff"
-              font-size="52"
-              font-family="Arial, sans-serif"
-            >
-              ♥
-            </text>
-
-            <text
-              x="160"
-              y="262"
-              text-anchor="middle"
-              fill="#ffffff"
-              font-size="18"
-              font-weight="700"
-              font-family="Arial, sans-serif"
-            >
-              TOGETHER
-            </text>
-          </g>
-
-          <text
-            x="600"
-            y="725"
-            text-anchor="middle"
-            fill="#3b302b"
-            font-size="42"
-            font-weight="800"
-            font-family="Arial, sans-serif"
-          >
-            PET COUPLE T-SHIRT
-          </text>
-        </svg>
+        <div class="food-image" aria-label="야키소바">
+          🍜
+        </div>
 
         <div class="content">
-          <span class="badge">반려동물 패션</span>
+          <span class="badge">인기 메뉴</span>
 
-          <h2 class="product-title">반려동물 커플티</h2>
+          <h2 class="product-title">야키소바</h2>
 
           <p class="description">
-            성별 구분 없이 누구나 편안하게 착용할 수 있는
-            반려인·반려동물 커플티입니다.
+            쫄깃한 면과 채소를 고소한 소스에 볶아 만든 일본식 볶음면입니다.
           </p>
 
-          <div class="info-row">
-            <span class="info-label">가격</span>
-            <strong class="price">50,000원</strong>
+          <div class="row">
+            <div>
+              <div class="row-label">가격</div>
+              <div class="unit-price">1개 기준</div>
+            </div>
+
+            <strong>1,000원</strong>
           </div>
 
-          <div class="info-row">
-            <span class="info-label">사이즈</span>
-            <strong class="info-value">Free size</strong>
-          </div>
-
-          <div class="info-row">
-            <span class="info-label">성별 구분</span>
-            <strong class="info-value">없음</strong>
-          </div>
-
-          <div class="info-row">
-            <label for="quantity" class="info-label">수량</label>
+          <div class="row">
+            <label for="quantity" class="row-label">수량</label>
 
             <select id="quantity">
               <option value="1">1개</option>
@@ -540,80 +405,80 @@
               <option value="5">5개</option>
             </select>
           </div>
+
+          <div class="row total-row">
+            <span class="total-label">총 결제금액</span>
+            <strong id="totalPrice" class="total-price">1,000원</strong>
+          </div>
         </div>
       </section>
 
-      <section class="summary-card">
-        <div class="summary-row">
-          <span>상품</span>
-          <strong>반려동물 커플티</strong>
+      <section class="customer-section">
+        <h2>주문자 정보</h2>
+
+        <div class="field">
+          <label for="customerName">이름</label>
+          <input
+            id="customerName"
+            type="text"
+            maxlength="30"
+            placeholder="홍길동"
+            autocomplete="name"
+          />
         </div>
 
-        <div class="summary-row">
-          <span>수량</span>
-          <strong id="summaryQuantity">1개</strong>
-        </div>
-
-        <div class="summary-row total-row">
-          <span>총 결제금액</span>
-          <strong id="totalPrice" class="total-price">50,000원</strong>
+        <div class="field">
+          <label for="customerEmail">이메일</label>
+          <input
+            id="customerEmail"
+            type="email"
+            maxlength="100"
+            placeholder="example@email.com"
+            autocomplete="email"
+          />
         </div>
       </section>
 
-      <!-- 사용자 이름과 이메일 입력 없이 바로 결제 -->
       <button id="payButton" class="pay-button" type="button">
-        50,000원 결제하기
+        1,000원 결제하기
       </button>
 
       <p class="notice">
-        이름과 이메일을 입력하지 않아도 바로 결제할 수 있습니다.<br />
-        테스트 클라이언트 키 사용 시 실제 금액은 청구되지 않습니다.
+        테스트 클라이언트 키를 사용하면 실제 금액이 청구되지 않습니다.<br />
+        실결제 운영 전에는 서버 측 주문 금액 검증과 주문 DB가 필요합니다.
       </p>
     </div>
   </main>
 
   <script>
     /*
-     * 토스페이먼츠 클라이언트 키입니다.
-     *
-     * 테스트 결제:
-     * test_ck_ 또는 test_gck_ 형태의 키 사용
-     *
-     * 실제 결제:
-     * live_ck_ 또는 live_gck_ 형태의 운영 키 사용
-     *
-     * 시크릿 키는 절대로 이 파일에 넣으면 안 됩니다.
+     * 반드시 토스 개발자센터의 테스트 클라이언트 키로 교체하세요.
+     * test_gck_ 또는 test_ck_ 형태의 클라이언트 키입니다.
+     * 시크릿 키를 여기에 넣으면 안 됩니다.
      */
-    const CLIENT_KEY =
-      "test_ck_Gv6LjeKD8aKb5O1WPkv4VwYxAdXy";
+    const CLIENT_KEY = "test_ck_Gv6LjeKD8aKb5O1WPkv4VwYxAdXy";
 
     const PRODUCT = {
-      id: "pet-couple-tshirt",
-      name: "반려동물 커플티",
-      price: 50000,
-      size: "Free size",
-      gender: "성별 구분 없음"
+      name: "야키소바",
+      unitPrice: 1000
     };
 
     const quantitySelect = document.getElementById("quantity");
-    const summaryQuantity =
-      document.getElementById("summaryQuantity");
-    const totalPriceElement =
-      document.getElementById("totalPrice");
+    const totalPriceElement = document.getElementById("totalPrice");
     const payButton = document.getElementById("payButton");
+    const customerNameInput = document.getElementById("customerName");
+    const customerEmailInput = document.getElementById("customerEmail");
 
     const orderArea = document.getElementById("orderArea");
     const loadingBox = document.getElementById("loadingBox");
-    const statusBox = document.getElementById("statusBox");
-    const statusIcon = document.getElementById("statusIcon");
-    const statusTitle = document.getElementById("statusTitle");
-    const statusMessage = document.getElementById("statusMessage");
+    const resultBox = document.getElementById("resultBox");
+    const resultIcon = document.getElementById("resultIcon");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultMessage = document.getElementById("resultMessage");
     const orderDetail = document.getElementById("orderDetail");
 
     function formatWon(amount) {
-      return (
-        new Intl.NumberFormat("ko-KR").format(amount) + "원"
-      );
+      return new Intl.NumberFormat("ko-KR").format(amount) + "원";
     }
 
     function getQuantity() {
@@ -621,14 +486,12 @@
     }
 
     function getTotalAmount() {
-      return PRODUCT.price * getQuantity();
+      return PRODUCT.unitPrice * getQuantity();
     }
 
-    function updateOrderSummary() {
-      const quantity = getQuantity();
+    function updatePrice() {
       const amount = getTotalAmount();
 
-      summaryQuantity.textContent = `${quantity}개`;
       totalPriceElement.textContent = formatWon(amount);
       payButton.textContent = `${formatWon(amount)} 결제하기`;
     }
@@ -643,42 +506,73 @@
     }
 
     function createOrderId() {
-      return createRandomId("ORDER");
+      /*
+       * 토스 orderId는 영문, 숫자, -, _를 사용하고
+       * 6자 이상 64자 이하로 생성합니다.
+       */
+      return createRandomId("YAKISOBA");
     }
 
     function createCustomerKey() {
-      /*
-       * 비회원 결제이므로 결제 요청마다 임시 고객 키를 생성합니다.
-       * 이름이나 이메일은 필요하지 않습니다.
-       */
-      return createRandomId("guest");
+      return createRandomId("customer");
+    }
+
+    function validateOrderForm() {
+      const customerName = customerNameInput.value.trim();
+      const customerEmail = customerEmailInput.value.trim();
+
+      if (!customerName) {
+        alert("주문자 이름을 입력해주세요.");
+        customerNameInput.focus();
+        return false;
+      }
+
+      if (!customerEmail) {
+        alert("이메일을 입력해주세요.");
+        customerEmailInput.focus();
+        return false;
+      }
+
+      if (!customerEmailInput.checkValidity()) {
+        alert("올바른 이메일 주소를 입력해주세요.");
+        customerEmailInput.focus();
+        return false;
+      }
+
+      if (
+        !CLIENT_KEY ||
+        CLIENT_KEY === "여기에_토스_테스트_클라이언트_키"
+      ) {
+        alert(
+          "index.html의 CLIENT_KEY를 토스 테스트 클라이언트 키로 교체해주세요."
+        );
+        return false;
+      }
+
+      return true;
     }
 
     async function requestPayment() {
-      if (!CLIENT_KEY || !CLIENT_KEY.startsWith("test_") &&
-          !CLIENT_KEY.startsWith("live_")) {
-        alert("CLIENT_KEY를 올바른 토스 클라이언트 키로 설정해주세요.");
+      if (!validateOrderForm()) {
         return;
       }
 
-      const quantity = getQuantity();
       const amount = getTotalAmount();
+      const quantity = getQuantity();
       const orderId = createOrderId();
       const customerKey = createCustomerKey();
 
-      const orderName =
-        quantity === 1
-          ? PRODUCT.name
-          : `${PRODUCT.name} ${quantity}개`;
-
+      /*
+       * 리다이렉트 후 승인 금액을 한 번 더 비교하기 위한 값입니다.
+       * 다만 실서비스에서는 이 값을 브라우저가 아니라 서버 DB에 저장해야 합니다.
+       */
       sessionStorage.setItem(
         "pendingOrder",
         JSON.stringify({
           orderId,
-          orderName,
           amount,
           quantity,
-          product: PRODUCT
+          orderName: `${PRODUCT.name} ${quantity}개`
         })
       );
 
@@ -701,7 +595,13 @@
           },
 
           orderId,
-          orderName,
+          orderName:
+            quantity === 1
+              ? PRODUCT.name
+              : `${PRODUCT.name} ${quantity}개`,
+
+          customerName: customerNameInput.value.trim(),
+          customerEmail: customerEmailInput.value.trim(),
 
           successUrl:
             window.location.origin +
@@ -714,10 +614,10 @@
             "?payment=fail"
         });
       } catch (error) {
-        console.error("결제 요청 오류:", error);
+        console.error(error);
 
         payButton.disabled = false;
-        updateOrderSummary();
+        updatePrice();
 
         alert(
           error?.message ||
@@ -733,17 +633,17 @@
       const orderId = params.get("orderId");
       const amount = Number(params.get("amount"));
 
+      const pendingOrderText =
+        sessionStorage.getItem("pendingOrder");
+
       let pendingOrder = null;
 
       try {
-        const savedOrder =
-          sessionStorage.getItem("pendingOrder");
-
-        pendingOrder = savedOrder
-          ? JSON.parse(savedOrder)
+        pendingOrder = pendingOrderText
+          ? JSON.parse(pendingOrderText)
           : null;
       } catch (error) {
-        console.error("주문 정보 확인 오류:", error);
+        console.error("주문 정보 읽기 실패:", error);
       }
 
       orderArea.style.display = "none";
@@ -752,15 +652,23 @@
       if (!paymentKey || !orderId || !Number.isFinite(amount)) {
         loadingBox.classList.remove("show");
 
-        showStatus({
+        showResult({
           success: false,
           title: "결제 정보가 올바르지 않습니다.",
-          message: "결제 승인 정보가 전달되지 않았습니다."
+          message:
+            "결제 승인에 필요한 정보가 전달되지 않았습니다."
         });
 
         return;
       }
 
+      /*
+       * 브라우저에 저장했던 주문 정보와 리다이렉트 결과를 비교합니다.
+       * 이것은 테스트용 보조 검증입니다.
+       *
+       * 실결제 서비스에서는 confirm.js가 서버 DB의 주문 금액과
+       * 반드시 대조해야 합니다.
+       */
       if (
         pendingOrder &&
         (
@@ -770,33 +678,44 @@
       ) {
         loadingBox.classList.remove("show");
 
-        showStatus({
+        showResult({
           success: false,
           title: "주문 정보가 일치하지 않습니다.",
-          message: "주문번호 또는 결제 금액이 변경되었습니다."
+          message:
+            "결제 요청 금액 또는 주문번호가 변경되었습니다."
         });
 
         return;
       }
 
       try {
-        /*
-         * Vercel 서버 함수로 결제를 승인합니다.
-         * 아래에 제공된 api/confirm.js 파일이 필요합니다.
-         */
-        const response = await fetch("/api/confirm", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            paymentKey,
-            orderId,
-            amount
-          })
-        });
+        const response = await fetch(
+          "/.netlify/functions/confirm",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              paymentKey,
+              orderId,
+              amount
+            })
+          }
+        );
 
-        const result = await response.json();
+        let result;
+
+        try {
+          result = await response.json();
+        } catch {
+          result = {
+            message:
+              "승인 서버에서 올바르지 않은 응답을 반환했습니다."
+          };
+        }
+
+        loadingBox.classList.remove("show");
 
         if (!response.ok) {
           throw new Error(
@@ -807,20 +726,17 @@
           );
         }
 
-        loadingBox.classList.remove("show");
         sessionStorage.removeItem("pendingOrder");
 
-        showStatus({
+        showResult({
           success: true,
           title: "결제가 완료되었습니다.",
-          message: "주문이 정상적으로 승인되었습니다.",
+          message:
+            "야키소바 주문이 정상적으로 승인되었습니다.",
           detail: `
-            <strong>상품명</strong>: 반려동물 커플티<br />
-            <strong>수량</strong>: ${pendingOrder?.quantity || 1}개<br />
-            <strong>사이즈</strong>: Free size<br />
-            <strong>성별 구분</strong>: 없음<br />
             <strong>주문번호</strong>: ${escapeHtml(orderId)}<br />
-            <strong>결제금액</strong>: ${formatWon(amount)}
+            <strong>결제금액</strong>: ${formatWon(amount)}<br />
+            <strong>결제상태</strong>: ${escapeHtml(result.status || "DONE")}
           `
         });
       } catch (error) {
@@ -828,7 +744,7 @@
 
         loadingBox.classList.remove("show");
 
-        showStatus({
+        showResult({
           success: false,
           title: "결제 승인에 실패했습니다.",
           message:
@@ -848,33 +764,41 @@
       const code = params.get("code") || "UNKNOWN_ERROR";
       const message =
         params.get("message") ||
-        "결제가 취소되었거나 실패했습니다.";
+        "결제 과정이 취소되었거나 실패했습니다.";
+      const orderId = params.get("orderId");
 
       orderArea.style.display = "none";
 
-      showStatus({
+      showResult({
         success: false,
         title:
           code === "PAY_PROCESS_CANCELED"
             ? "결제가 취소되었습니다."
             : "결제를 완료하지 못했습니다.",
         message,
-        detail: `<strong>오류 코드</strong>: ${escapeHtml(code)}`
+        detail: `
+          <strong>오류 코드</strong>: ${escapeHtml(code)}
+          ${
+            orderId
+              ? `<br /><strong>주문번호</strong>: ${escapeHtml(orderId)}`
+              : ""
+          }
+        `
       });
     }
 
-    function showStatus({
+    function showResult({
       success,
       title,
       message,
       detail = ""
     }) {
-      statusBox.className =
-        `status-box show ${success ? "success" : "error"}`;
+      resultBox.className =
+        `result-box show ${success ? "success" : "error"}`;
 
-      statusIcon.textContent = success ? "✅" : "⚠️";
-      statusTitle.textContent = title;
-      statusMessage.textContent = message;
+      resultIcon.textContent = success ? "✅" : "⚠️";
+      resultTitle.textContent = title;
+      resultMessage.textContent = message;
 
       if (detail) {
         orderDetail.style.display = "block";
@@ -901,25 +825,23 @@
         .replaceAll("'", "&#039;");
     }
 
-    quantitySelect.addEventListener(
-      "change",
-      updateOrderSummary
-    );
+    function initializePage() {
+      quantitySelect.addEventListener("change", updatePrice);
+      payButton.addEventListener("click", requestPayment);
 
-    payButton.addEventListener("click", requestPayment);
+      updatePrice();
 
-    updateOrderSummary();
+      const params = new URLSearchParams(window.location.search);
+      const paymentResult = params.get("payment");
 
-    const queryParams =
-      new URLSearchParams(window.location.search);
-
-    const paymentResult = queryParams.get("payment");
-
-    if (paymentResult === "success") {
-      confirmPayment();
-    } else if (paymentResult === "fail") {
-      handlePaymentFailure();
+      if (paymentResult === "success") {
+        confirmPayment();
+      } else if (paymentResult === "fail") {
+        handlePaymentFailure();
+      }
     }
+
+    initializePage();
   </script>
 </body>
 </html>
